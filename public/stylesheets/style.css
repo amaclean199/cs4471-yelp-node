@@ -10,26 +10,34 @@ body,html {
 	color: #ffffff;
 }
 
-a {
+.hidden {
+	display:none;
+}
+
+a, span.linklike {
 	text-decoration: none;
 	color: #00aed1;
 }
 
-a:hover {
+a:hover, span.linklike:hover {
 	text-decoration: underline;
+	cursor:pointer;
 }
 
 .newappIcon {
-	padding-top: 10%;
 	display: block;
 	margin: 0 auto;
-	padding-bottom: 2em;
 	max-width:200px;
 }
 
 h1 {
 	font-weight: bold;
 	font-size: 2em;
+}
+
+h2 {
+	font-weight: bold;
+	font-size: 1.5em;
 }
 
 .leftHalf {
@@ -80,3 +88,7 @@ pre {
 	margin: 0;
 }
 
+ul {
+	list-style-type: none;
+	padding:0
+}
