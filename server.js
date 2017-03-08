@@ -18,6 +18,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -108,9 +110,9 @@ app.put("/words", function(request, response) {
 });
 
 // test add
-app.put("/reviews", function(request, response) {
+app.put("/reviews", passport.authenticate('jwt', {session:false}), function(request, response) {
     if(!request.body) response.send("body was empty");
-	
+
   mongodb.collection("reviews").insertOne( request.body, function(error, result) {
       if (error) {
         response.status(500).send(error);
