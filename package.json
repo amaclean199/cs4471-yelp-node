@@ -9,9 +9,7 @@
     "express": "~4.x",
     "http-post": "^0.1.1",
     "http-proxy": "^1.8.1",
-    "mongodb": "^2.2.9",
-    "passport":"*",
-    "passport-jwt":"*"
+    "mongodb": "^2.2.9"
   },
   "main": "server.js",
   "scripts": {
