@@ -1,8 +1,7 @@
+---
 applications:
-- path: .
-  memory: 256M
-  instances: 1
-  domain: mybluemix.net
-  name: cs4471-yelp-node
-  host: cs4471-yelp-node
-  disk_quota: 1024M
+- name:    Team200-mongodb-yelp
+  host:    Team200-mongodb-yelp
+  memory:  512M
+  services:
+    - Team200-mongodb-yelp-service
