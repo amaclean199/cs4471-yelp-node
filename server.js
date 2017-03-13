@@ -171,8 +171,9 @@ app.get("/api/version", function(request, response) {
   //version route
   // var ver = { 'version': '1.0.0'};
   // response.json(ver);
-  mongodb.collection("reviews").drop();
-  mongodb.collection("words").drop();
+  mongodb.collection("reviews").drop(function(){});
+  mongodb.collection("words").drop(function(){});
+  response.send("done");
 });
 
 // Now we go and listen for a connection.
