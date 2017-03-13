@@ -121,10 +121,10 @@ app.put("/reviews",  function(request, response) {
 });
 
 // Then we create a route to handle our example database call
-app.get("/api/data/", function(request, response) {
+app.get("/api/data/:values", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.
-  mongodb.collection("reviews").find().toArray(function(err, words) {
+  mongodb.collection("reviews").find({ "funny": "83" }).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
