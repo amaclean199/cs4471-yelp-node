@@ -163,7 +163,7 @@ app.get("/api/:values", function(request, response) {
 app.get("/api/version", function(request, response) {
   //version route
   var version = 1.0.0;
-  request.send(vession);
+  request.send(version);
 });
 
 // Now we go and listen for a connection.
