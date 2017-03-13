@@ -148,13 +148,17 @@ app.get("/reviews", function(request, response) {
   });
 });
 
-Then we create a route to handle our example database call
+//Then we create a route to handle our example database call
 app.get("/reviews2", function(request, response) {
   // and we call on the connection to return us all the documents in the
-  // words collection.
-  mongodb.collection("reviews").find().toArray(function(err, words) {
+  // words collection.\
+  //var k = { "funny" : 110 };
+
+  //var j = JSON.parse(s);
+
+  mongodb.collection("reviews").find({ "funny" : 110 }).toArray(function(err, words) {
     if (err) {
-     response.status(500).send(err);
+     response.send(err);
     } else {
      response.send(words);
     }
