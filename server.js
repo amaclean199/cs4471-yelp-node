@@ -151,19 +151,17 @@ app.get("/reviews", function(request, response) {
 app.get("/reviews2", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.\
-  var text = '{ "funny" : "83" }';
+  var s = '{ "funny" : {"$gt":83} }';
 
-  var obj = JSON.parse(text);
-  var myJSON = JSON.stringify(myObj);
+  var j = JSON.parse(s);
 
-  response.send(myJSON);
-  // mongodb.collection("reviews").find(x).toArray(function(err, words) {
-  //   if (err) {
-  //    response.status(500).send(err);
-  //   } else {
-  //    response.send(words);
-  //   }
-  // });
+  mongodb.collection("reviews").find(j).toArray(function(err, words) {
+    if (err) {
+     response.status(500).send(err);
+    } else {
+     response.send(words);
+    }
+  });
 });
 
 // Then we create a route to handle our example database call
