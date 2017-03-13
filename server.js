@@ -155,7 +155,7 @@ app.get("/reviews2", function(request, response) {
 
   var j = JSON.parse(s);
 
-  mongodb.collection("reviews").find(j).toArray(function(err, words) {
+  mongodb.collection("reviews").find(j, function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
