@@ -159,10 +159,11 @@ app.get("/api/:values", function(request, response) {
   });
 });
 
+version: { "version": "1.0.0"};
 // Then we create a route to handle our example database call
 app.get("/api/version", function(request, response) {
   //version route
-  version: { "version": "1.0.0"}
+
   response.send(version);
 });
 
