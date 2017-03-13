@@ -147,7 +147,7 @@ app.put("/reviews",  function(request, response) {
 // });
 
 // Then we create a route to handle our example database call
-app.get("/api/:values", function(request, response) {
+app.get("/api/data/:values", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.
   mongodb.collection(request.params.values).find().toArray(function(err, words) {
