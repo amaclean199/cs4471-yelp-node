@@ -120,37 +120,11 @@ app.put("/reviews",  function(request, response) {
     });
 });
 
-// // Then we create a route to handle our example database call
-// app.get("/words", function(request, response) {
-//   // and we call on the connection to return us all the documents in the
-//   // words collection.
-//   mongodb.collection("words").find().toArray(function(err, words) {
-//     if (err) {
-//      response.status(500).send(err);
-//     } else {
-//      response.send(words);
-//     }
-//   });
-// });
-
-// // Then we create a route to handle our example database call
-// app.get("/reviews", function(request, response) {
-//   // and we call on the connection to return us all the documents in the
-//   // words collection.
-//   mongodb.collection("reviews").find().toArray(function(err, words) {
-//     if (err) {
-//      response.status(500).send(err);
-//     } else {
-//      response.send(words);
-//     }
-//   });
-// });
-
 // Then we create a route to handle our example database call
 app.get("/api/data/:values", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.
-  mongodb.collection(request.params.values).find().toArray(function(err, words) {
+  mongodb.collection("reviews").find(request.params.values).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
