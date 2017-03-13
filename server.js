@@ -163,7 +163,8 @@ app.get("/api/:values", function(request, response) {
 // Then we create a route to handle our example database call
 app.get("/api/version", function(request, response) {
   //version route
-  response.json({ 'version': '1.0.0'});
+  var ver = { 'version': '1.0.0'};
+  response.json(ver);
 });
 
 // Now we go and listen for a connection.
