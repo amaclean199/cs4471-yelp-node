@@ -19,6 +19,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -151,11 +152,11 @@ app.get("/reviews", function(request, response) {
 app.get("/reviews2", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.\
-  var s = { "funny" : 83 };
+  var s = { "funny" : 110 };
 
   //var j = JSON.parse(s);
 
-  mongodb.collection("reviews").find(s).toArray(function(err, words) {
+  mongodb.collection("reviews").findOne(s, (function(err, words) {
     if (err) {
      response.send(err);
     } else {
