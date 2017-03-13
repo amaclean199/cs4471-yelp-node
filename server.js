@@ -151,7 +151,8 @@ app.get("/reviews", function(request, response) {
 app.get("/reviews2", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.\
-  var str_t = 'funny:{$gt:83}';
+  var x JSON.parse('"funny":{"$gt":83}');
+  var str_t = '"funny":{"$gt":83}';
   //var x = JSON.parse();
   response.send(str_t);
   // mongodb.collection("reviews").find().toArray(function(err, words) {
