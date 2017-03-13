@@ -153,9 +153,9 @@ app.get("/reviews2", function(request, response) {
   // words collection.\
   var s = '{ "funny" : 83 }';
 
-  var j = JSON.parse(s);
+  //var j = JSON.parse(s);
 
-  mongodb.collection("reviews").find(j).toArray(function(err, words) {
+  mongodb.collection("reviews").find(s).toArray(function(err, words) {
     if (err) {
      response.send(err);
     } else {
