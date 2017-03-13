@@ -156,10 +156,10 @@ app.get("/reviews2", function(request, response) {
 '{ "firstName":"Anna" , "lastName":"Smith" },' +
 '{ "firstName":"Peter" , "lastName":"Jones" } ]}';
 
-var obj = JSON.parse(text);
-  
+  var obj = JSON.parse(text);
+  var myJSON = JSON.stringify(myObj);
   //var x = JSON.parse();
-  response.send(text);
+  response.send(myJSON);
   // mongodb.collection("reviews").find().toArray(function(err, words) {
   //   if (err) {
   //    response.status(500).send(err);
