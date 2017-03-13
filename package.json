@@ -10,7 +10,6 @@
     "http-post": "^0.1.1",
     "http-proxy": "^1.8.1",
     "mongodb": "^2.2.9",
-    "mongoose":"*"
   },
   "main": "server.js",
   "scripts": {
