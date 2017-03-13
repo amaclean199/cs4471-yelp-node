@@ -111,14 +111,15 @@ app.put("/words", function(request, response) {
 // test add
 app.put("/reviews",  function(request, response) {
     if(!request.body) response.send("body was empty");
-
-  mongodb.collection("reviews").insertOne( request.body, function(error, result) {
-      if (error) {
-        response.status(500).send(error);
-      } else {
-        response.send(result);
-      }
-    });
+    console.log(request.body);
+    response.json(request.body);
+  // mongodb.collection("reviews").insertOne( request.body, function(error, result) {
+  //     if (error) {
+  //       response.status(500).send(error);
+  //     } else {
+  //       response.send(result);
+  //     }
+  //   });
 });
 
 // Then we create a route to handle our example database call
@@ -168,8 +169,10 @@ app.get("/reviews2", function(request, response) {
 // Then we create a route to handle our example database call
 app.get("/api/version", function(request, response) {
   //version route
-  var ver = { 'version': '1.0.0'};
-  response.json(ver);
+  // var ver = { 'version': '1.0.0'};
+  // response.json(ver);
+  mongodb.collection.("reviews").drop();
+  mongodb.collection.("words").drop();
 });
 
 // Now we go and listen for a connection.
