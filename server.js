@@ -157,13 +157,13 @@ app.get("/reviews2", function(request, response) {
   var myJSON = JSON.stringify(myObj);
 
   response.send(myJSON);
-  mongodb.collection("reviews").find().toArray(function(err, words) {
-    if (err) {
-     response.status(500).send(err);
-    } else {
-     response.send(words);
-    }
-  });
+  // mongodb.collection("reviews").find({funny:83}).toArray(function(err, words) {
+  //   if (err) {
+  //    response.status(500).send(err);
+  //   } else {
+  //    response.send(words);
+  //   }
+  // });
 });
 
 // Then we create a route to handle our example database call
