@@ -136,7 +136,7 @@ app.get("/api/v1/reviews", function(request, response) {
   var value = parseInt(request.query.value);
 
   //Check for correct input
-  if( value < 0) || !(type==="funny" || type==="cool" || type==="useful") ){
+  if( value<0 || !(type==="funny" || type==="cool" || type==="useful") ){
     response.send({error: true, message: '(233) bad api call'});
   }
 
