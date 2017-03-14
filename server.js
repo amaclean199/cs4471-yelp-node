@@ -133,7 +133,15 @@ app.get("/reviews", function(request, response) {
 app.get("/api/v1/reviews", function(request, response) {
 
   var type = request.query.type;
-  var value = parseInt(request.query.value);
+  var value;
+
+  try {
+      value = parseInt(request.query.value);
+  }
+  catch(err) {
+      response.send({error: true, message: '(233) bad api call: value'+
+        ' must be a non-zero integer.'});
+  }
 
   //Check for correct input
   if( value<0 || !(type==="funny" || type==="cool" || type==="useful") ){
