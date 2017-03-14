@@ -142,11 +142,13 @@ app.get("/api/v1/reviews", function(request, response) {
   catch(err) {
       response.send({error: true, message: '(233) bad api call: value'+
         ' must be a non-zero integer.'});
+        return;
   }
 
   //Check for correct input
   if( value<0 || !(type==="funny" || type==="cool" || type==="useful") ){
     response.send({error: true, message: '(233) bad api call'});
+    return;
   }
 
   var s = '{"'+type+'":{"$gt":' + value + '}}';
