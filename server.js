@@ -131,19 +131,45 @@ app.get("/reviews", function(request, response) {
 // API handling for reviews based on funny/userful/cool rating
 // /api/v1/reviews/?type=<type>&value=<number>
 app.get("/api/v1/reviews", function(request, response) {
-  // and we call on the connection to return us all the documents in the
-  // words collection.\
-  var s = '{ "funny" : {"$gt" : 2} }'
-  var p = JSON.parse(s);
 
-  mongodb.collection("yelp").find(p/*{ "funny" : {"$gt" : 2} }*/).toArray(function(err, words) {
-    if (err) {
-     response.send(err);
-    } else {
-     response.send(words);
-    }
-  });
+  var type = request.query.type;
+  var value = parseInt(request.query.value);
+
+  if( type==="funny" || type==="cool" || type==="useful" || value<0 ){
+
+      var s = '{"'+type+'":{"$gt":' + value + '}}';
+
+      var j = JSON.parse(s);
+      User.find(j, function(err, words) {
+        if (err) {
+         response.status(500).send(err);
+        } else {
+         response.send(words);
+        }
+      });
+  }
+  else{
+    response.send({error: true, message: '(233) bad api call'});
+  }
 });
+
+//Back up
+// API handling for reviews based on funny/userful/cool rating
+// app.get("/api/v1/reviews", function(request, response) {
+//   // and we call on the connection to return us all the documents in the
+//   // words collection.\
+//   var s = '{ "funny" : {"$gt" : 2} }'
+//   var p = JSON.parse(s);
+//
+//   mongodb.collection("yelp").find(p/*{ "funny" : {"$gt" : 2} }*/).toArray(function(err, words) {
+//     if (err) {
+//      response.send(err);
+//     } else {
+//      response.send(words);
+//     }
+//   });
+// });
+// /api/v1/reviews/?type=<type>&value=<number>
 
 // Now we go and listen for a connection.
 app.listen(port);
