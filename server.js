@@ -110,37 +110,29 @@ app.put("/words", function(request, response) {
 
 // test add
 app.put("/reviews",  function(request, response) {
-    if(!request.body) response.send("body was empty");
-    console.log(request.body);
-    response.json(request.body);
-  // mongodb.collection("reviews").insertOne( request.body, function(error, result) {
-  //     if (error) {
-  //       response.status(500).send(error);
-  //     } else {
-  //       response.send(result);
-  //     }
-  //   });
-});
+  if(!request.body) response.send("body was empty");
 
-// Then we create a route to handle our example database call
-app.get("/api/data/:values", function(request, response) {
-  // and we call on the connection to return us all the documents in the
-  // words collection.
-  response.send(request.params.values);
-  // mongodb.collection("reviews").find().toArray(function(err, words) {
-  //   if (err) {
-  //    response.status(500).send(err);
-  //   } else {
-  //    response.send(words);
-  //   }
-  // });
+  var temp  = request.body;
+
+  temp.useful = parseInt(temp.useful);
+  temp.funny = parseInt(temp.funny);
+  temp.cool = parseInt(temp.cool);
+  temp.stars = parseInt(temp.stars);
+
+  mongodb.collection("yelp").insertOne( temp, function(error, result) {
+      if (error) {
+        response.status(500).send(error);
+      } else {
+        response.send(result);
+      }
+    });
 });
 
 // Then we create a route to handle our example database call
 app.get("/reviews", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.
-  mongodb.collection("reviews").find().toArray(function(err, words) {
+  mongodb.collection("yelp").find().toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
