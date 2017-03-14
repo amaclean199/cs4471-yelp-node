@@ -135,22 +135,23 @@ app.get("/api/v1/reviews", function(request, response) {
   var type = request.query.type;
   var value = parseInt(request.query.value);
 
-  if( type==="funny" || type==="cool" || type==="useful" || value<0 ){
-
-      var s = '{"'+type+'":{"$gt":' + value + '}}';
-
-      var j = JSON.parse(s);
-      User.find(j, function(err, words) {
-        if (err) {
-         response.status(500).send(err);
-        } else {
-         response.send(words);
-        }
-      });
-  }
-  else{
+  //Check for correct input
+  if( value < 0) || !(type==="funny" || type==="cool" || type==="useful") ){
     response.send({error: true, message: '(233) bad api call'});
   }
+
+  var s = '{"'+type+'":{"$gt":' + value + '}}';
+  var j = JSON.parse(s);
+
+  User.find(j, function(err, words) {
+    if (err) {
+      response.status(500).send(err);
+    }
+    else {
+      response.send(words);
+    }
+  });
+
 });
 
 //Back up
