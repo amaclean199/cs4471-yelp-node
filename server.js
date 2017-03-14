@@ -129,14 +129,14 @@ app.get("/reviews", function(request, response) {
 });
 
 // API handling for reviews based on funny/userful/cool rating
-app.get("/reviews2", function(request, response) {
+// /api/v1/reviews/?type=<type>&value=<number>
+app.get("/api/v1/reviews", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.\
-  //var k = { "funny" : 110 };
+  var s = '{ "funny" : {"$gt" : 2} }'
+  var p = JSON.parse(s);
 
-  //var j = JSON.parse(s);
-
-  mongodb.collection("yelp").find({ "funny" : {"$gt" : 2} }).toArray(function(err, words) {
+  mongodb.collection("yelp").find(p/*{ "funny" : {"$gt" : 2} }*/).toArray(function(err, words) {
     if (err) {
      response.send(err);
     } else {
