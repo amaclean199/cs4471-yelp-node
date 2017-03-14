@@ -134,7 +134,7 @@ app.get("/reviews", function(request, response) {
   // words collection.
 
   var s = '{"funny": {"$gt":74}}';
-  var j = JSON.prase(s)
+  var j = JSON.parse(s)
   mongodb.collection("yelp").find(j).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
