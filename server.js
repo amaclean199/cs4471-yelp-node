@@ -133,13 +133,9 @@ app.get("/reviews", function(request, response) {
 app.get("/api/v1/reviews", function(request, response) {
 
   var type = request.query.type;
-  var value;
+  var value = parseInt(request.query.value);;
 
-  try {
-      value = parseInt(request.query.value);
-      console.log(value);
-  }
-  catch(err) {
+  if( isNaN(value) ){
       response.send({error: true, message: '(233) bad api call: value'+
         ' must be a non-zero integer.'});
         return;
