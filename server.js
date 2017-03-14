@@ -96,42 +96,29 @@ MongoClient.connect(credentials.uri, {
 // now set up our web server. First up we set it to server static pages
 app.use(express.static(__dirname + '/public'));
 
-// Add words to the database
-app.put("/words", function(request, response) {
-  mongodb.collection("words").insertOne( {
-    word: request.body.word, definition: request.body.definition}, function(error, result) {
-      if (error) {
-        response.status(500).send(error);
-      } else {
-        response.send(result);
-      }
-    });
-});
+// Add entries using http put
+//Commented out to prevent mistakes
+// app.put("/reviews",  function(request, response) {
+//   if(!request.body) response.send("body was empty");
+//
+//   var temp  = request.body;
+//
+//   temp.useful = parseInt(temp.useful);
+//   temp.funny = parseInt(temp.funny);
+//   temp.cool = parseInt(temp.cool);
+//   temp.stars = parseInt(temp.stars);
+//
+//   mongodb.collection("yelp").insertOne( temp, function(error, result) {
+//       if (error) {
+//         response.status(500).send(error);
+//       } else {
+//         response.send(result);
+//       }
+//     });
+// });
 
-// test add
-app.put("/reviews",  function(request, response) {
-  if(!request.body) response.send("body was empty");
-
-  var temp  = request.body;
-
-  temp.useful = parseInt(temp.useful);
-  temp.funny = parseInt(temp.funny);
-  temp.cool = parseInt(temp.cool);
-  temp.stars = parseInt(temp.stars);
-
-  mongodb.collection("yelp").insertOne( temp, function(error, result) {
-      if (error) {
-        response.status(500).send(error);
-      } else {
-        response.send(result);
-      }
-    });
-});
-
-// Then we create a route to handle our example database call
+// Returns our default "funny" list
 app.get("/reviews", function(request, response) {
-  // and we call on the connection to return us all the documents in the
-  // words collection.
   mongodb.collection("yelp").find({ "funny" : {"$gt" : 2} }).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
@@ -141,7 +128,7 @@ app.get("/reviews", function(request, response) {
   });
 });
 
-//Then we create a route to handle our example database call
+// API handling for reviews based on funny/userful/cool rating
 app.get("/reviews2", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.\
@@ -156,16 +143,6 @@ app.get("/reviews2", function(request, response) {
      response.send(words);
     }
   });
-});
-
-// Then we create a route to handle our example database call
-app.get("/api/version", function(request, response) {
-  //version route
-  // var ver = { 'version': '1.0.0'};
-  // response.json(ver);
-  mongodb.collection("reviews").drop(function(){});
-  mongodb.collection("words").drop(function(){});
-  response.send("done");
 });
 
 // Now we go and listen for a connection.
