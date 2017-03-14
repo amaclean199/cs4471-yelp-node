@@ -149,7 +149,7 @@ app.get("/reviews2", function(request, response) {
 
   //var j = JSON.parse(s);
 
-  mongodb.collection("yelp").find({ "funny" : {"$gt" : 110} }).toArray(function(err, words) {
+  mongodb.collection("yelp").find({ "funny" : {"$gt" : 2} }).toArray(function(err, words) {
     if (err) {
      response.send(err);
     } else {
