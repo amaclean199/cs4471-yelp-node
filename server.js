@@ -132,7 +132,9 @@ app.put("/reviews",  function(request, response) {
 app.get("/reviews", function(request, response) {
   // and we call on the connection to return us all the documents in the
   // words collection.
-  mongodb.collection("yelp").find().toArray(function(err, words) {
+
+  var x = {funny: {$gt:74}};
+  mongodb.collection("yelp").find(x).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
