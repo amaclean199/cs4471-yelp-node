@@ -18,6 +18,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var https = require('https');
 
 
 app.use(bodyParser.json());
@@ -308,7 +309,12 @@ app.get("/api/v1/business", function(request, response) {
 // /api/v1/reviews/?type=<type>&value=<number>
 
 // Now we go and listen for a connection.
-app.listen(port);
+https.createServer({
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+  passphrase: 'cs4471-team200'
+}, app).listen(port);
+//app.listen(port);
 
 require("cf-deployment-tracker-client").track();
 
