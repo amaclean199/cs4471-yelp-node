@@ -179,19 +179,12 @@ app.get("/api/v1/authors", function(request, response) {
   if( isNaN(stars_max) ){
       stars_max = 6;
   }
-  if( isNaN(date_min) ){
+  //validate date input
+  if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
       date_min = "1000-01-01";
   }
-  if( isNaN(date_max) ){
+  if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
       date_max = "3000-12-31";
-  }
-
-  if(!isValidDate(date_min) || !isValidDate(date_min) ){
-
-    response.send({error: true, message: '(233) bad api call.\n'
-                  +'Date formate is YYYY-MM-DD'});
-    return;
-
   }
 
   //Build user Query
