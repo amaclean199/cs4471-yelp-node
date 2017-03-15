@@ -16,10 +16,11 @@
 
  // First add the obligatory web framework
 var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+var fs = require('fs');
 var https = require('https');
+var app = express();
 
+var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
