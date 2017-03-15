@@ -179,13 +179,28 @@ app.get("/api/v1/authors", function(request, response) {
   if( isNaN(stars_max) ){
       stars_max = 5;
   }
+  //Check for sensible input
+  if(stars_min < 0){
+    stars_min = 0;
+  }
+  if(stars_max > 5){
+    stars_max = 5;
+  }
+  if(stars_min > stars_max){
+    stars_min = 0;
+    stars_max = 5;
+  }
 
   //validate date input
   if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
-      date_min = "1000-01-01";
+    date_min = "1000-01-01";
   }
   if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
-      date_max = "3000-12-31";
+    date_max = "3000-12-31";
+  }
+  if(date_min > date_max){
+    date_min = "1000-01-01";
+    date_max = "3000-12-31";
   }
 
   //Build user Query
