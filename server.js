@@ -177,13 +177,13 @@ app.get("/api/v1/authors", function(request, response) {
       stars_min = -1;
   }
   if( isNaN(stars_max) ){
-      stars_min = 6;
+      stars_max = 6;
   }
   if( isNaN(date_min) ){
-      stars_min = "1000-01-01";
+      date_min = "1000-01-01";
   }
   if( isNaN(date_max) ){
-      stars_min = "3000-12-31";
+      date_max = "3000-12-31";
   }
 
   // if(!isValidDate(date_min) || !isValidDate(date_min) ){
@@ -195,7 +195,7 @@ app.get("/api/v1/authors", function(request, response) {
   // }
 
   //Build star query string
-  var stars = '"stars":{"$gt":-1,"$lt":6}'
+  var stars = '"stars":{"$gt":'+stars_min+',"$lt":'+stars_max+'}'
 
   var s = '{"user_id":"wnzfuir72IZFg5RAPOwWCQ", "date":"2013-11-17",'
               + stars
