@@ -174,11 +174,12 @@ app.get("/api/v1/authors", function(request, response) {
 
   //check for null input
   if( isNaN(stars_min) ){
-      stars_min = -1;
+      stars_min = 0;
   }
   if( isNaN(stars_max) ){
-      stars_max = 6;
+      stars_max = 5;
   }
+
   //validate date input
   if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
       date_min = "1000-01-01";
@@ -190,9 +191,9 @@ app.get("/api/v1/authors", function(request, response) {
   //Build user Query
   var user = '"user_id":"wnzfuir72IZFg5RAPOwWCQ"';
   //Build star query string
-  var stars = '"stars":{"$gt":'+stars_min+',"$lt":'+stars_max+'}';
+  var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
   //Build date query string
-  var date = '"date":{"$gt":"'+date_min+'","$lt":"'+date_max+'"}';
+  var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
 
   var s = '{' + user  +','
               + date  +','
