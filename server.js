@@ -223,7 +223,70 @@ app.get("/api/v1/authors", function(request, response) {
       response.send(words);
     }
   });
+});
 
+// API handling for reviews based on an author id
+// /api/v1/authors/?business=<business_id>&stars_min=<number>&stars_max=<number>
+//                  &date_min=<number>&date_max=<number>
+app.get("/api/v1/business", function(request, response) {
+
+  var business = request.query.author;
+  var stars_min = parseInt(request.query.stars_min);
+  var stars_max = parseInt(request.query.stars_max);
+  var date_min = request.query.date_min;
+  var date_max = request.query.date_max;
+
+  //check for null input
+  if( isNaN(stars_min) ){
+      stars_min = 0;
+  }
+  if( isNaN(stars_max) ){
+      stars_max = 5;
+  }
+  //Check for sensible input
+  if(stars_min < 0){
+    stars_min = 0;
+  }
+  if(stars_max > 5){
+    stars_max = 5;
+  }
+  if(stars_min > stars_max){
+    stars_min = 0;
+    stars_max = 5;
+  }
+
+  //validate date input
+  if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
+    date_min = "1000-01-01";
+  }
+  if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
+    date_max = "3000-12-31";
+  }
+  if(date_min > date_max){
+    date_min = "1000-01-01";
+    date_max = "3000-12-31";
+  }
+
+  //Build user Query
+  var user = '"user_id":"'+author+'"';
+  //Build star query string
+  var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
+  //Build date query string
+  var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
+
+  var s = '{' + user  +','
+              + date  +','
+              + stars +'}';
+  var j = JSON.parse(s);
+
+  mongodb.collection("yelp").find(j).toArray(function(err, words) {
+    if (err) {
+      response.status(500).send(err);
+    }
+    else {
+      response.send(words);
+    }
+  });
 });
 
 //Back up
