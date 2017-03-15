@@ -161,6 +161,53 @@ app.get("/api/v1/reviews", function(request, response) {
 
 });
 
+// API handling for reviews based on an author id
+// /api/v1/authors/?author=<author_id>&stars_min=<number>&stars_max=<number>
+//                  &date_min=<number>&date_max=<number>
+app.get("/api/v1/authors", function(request, response) {
+
+  var author = request.query.author;
+  var stars_min = parseInt(request.query.stars_min);
+  var stars_max = parseInt(request.query.stars_max);
+  var date_min = request.query.date_min;
+  var date_max = request.query.date_max;
+
+  //check for null input
+  if( isNaN(stars_min) ){
+      stars_min = -1;
+  }
+  if( isNaN(stars_max) ){
+      stars_min = 6;
+  }
+  if( isNaN(date_min) ){
+      stars_min = "1000-01-01";
+  }
+  if( isNaN(date_max) ){
+      stars_min = "3000-12-31";
+  }
+
+  if(!isValidDate(date_min) || !isValidDate(date_min) ){
+
+    response.send({error: true, message: '(233) bad api call.\n'
+                  +'Date formate is YYYY-MM-DD'});
+    return;
+
+  }
+
+  var s = '{"user_id":"wnzfuir72IZFg5RAPOwWCQ"}';
+  var j = JSON.parse(s);
+
+  mongodb.collection("yelp").find(j).toArray(function(err, words) {
+    if (err) {
+      response.status(500).send(err);
+    }
+    else {
+      response.send(words);
+    }
+  });
+
+});
+
 //Back up
 // API handling for reviews based on funny/userful/cool rating
 // app.get("/api/v1/reviews", function(request, response) {
@@ -183,3 +230,31 @@ app.get("/api/v1/reviews", function(request, response) {
 app.listen(port);
 
 require("cf-deployment-tracker-client").track();
+
+//Validate dateString
+//http://stackoverflow.com/questions/6177975/how-to-validate-date-with-format-mm-dd-yyyy-in-javascript
+function isValidDate(dateString)
+{
+    // First check for the pattern
+    if(!/^\d{4}\-\d{2}\-\d{2}$/.test(dateString))
+        return false;
+
+    // Parse the date parts to integers
+    var parts = dateString.split("-");
+    var day = parseInt(parts[2], 10);
+    var month = parseInt(parts[1], 10);
+    var year = parseInt(parts[0], 10);
+
+    // Check the ranges of month and year
+    if(year < 1000 || year > 3000 || month == 0 || month > 12)
+        return false;
+
+    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+    // Adjust for leap years
+    if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+        monthLength[1] = 29;
+
+    // Check the range of the day
+    return day > 0 && day <= monthLength[month - 1];
+};
