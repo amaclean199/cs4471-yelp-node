@@ -230,7 +230,7 @@ app.get("/api/v1/authors", function(request, response) {
 //                  &date_min=<number>&date_max=<number>
 app.get("/api/v1/business", function(request, response) {
 
-  var business = request.query.author;
+  var business = request.query.business;
   var stars_min = parseInt(request.query.stars_min);
   var stars_max = parseInt(request.query.stars_max);
   var date_min = request.query.date_min;
@@ -268,13 +268,13 @@ app.get("/api/v1/business", function(request, response) {
   }
 
   //Build user Query
-  var user = '"business_id":"'+business+'"';
+  business = '"business_id":"'+business+'"';
   //Build star query string
   var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
   //Build date query string
   var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
 
-  var s = '{' + user  +','
+  var s = '{' + business  +','
               + date  +','
               + stars +'}';
   var j = JSON.parse(s);
