@@ -194,7 +194,12 @@ app.get("/api/v1/authors", function(request, response) {
   //
   // }
 
-  var s = '{"user_id":"wnzfuir72IZFg5RAPOwWCQ", "date":"2013-11-17","stars":1}';
+  //Build star query string
+  var stars = '"stars":{"$gt":-1,"$lt":6}'
+
+  var s = '{"user_id":"wnzfuir72IZFg5RAPOwWCQ", "date":"2013-11-17",'
+              + stars
+              +'}';
   var j = JSON.parse(s);
 
   mongodb.collection("yelp").find(j).toArray(function(err, words) {
