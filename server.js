@@ -204,7 +204,7 @@ app.get("/api/v1/authors", function(request, response) {
   }
 
   //Build user Query
-  var user = '"user_id":"wnzfuir72IZFg5RAPOwWCQ"';
+  var user = '"user_id":"'+author+'"';
   //Build star query string
   var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
   //Build date query string
