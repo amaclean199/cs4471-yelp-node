@@ -268,7 +268,7 @@ app.get("/api/v1/business", function(request, response) {
   }
 
   //Build user Query
-  var user = '"user_id":"'+author+'"';
+  var user = '"business_id":"'+business+'"';
   //Build star query string
   var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
   //Build date query string
