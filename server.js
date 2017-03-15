@@ -310,11 +310,11 @@ app.get("/api/v1/business", function(request, response) {
 // /api/v1/reviews/?type=<type>&value=<number>
 
 // Now we go and listen for a connection.
-https.createServer({
-  key: fs.readFileSync('newkey.pem'),
-  cert: fs.readFileSync('cert.pem'),
-}, app).listen(port);
-//app.listen(port);
+// https.createServer({
+//   key: fs.readFileSync('newkey.pem'),
+//   cert: fs.readFileSync('cert.pem'),
+// }, app).listen(port);
+app.listen(port);
 
 require("cf-deployment-tracker-client").track();
 
