@@ -311,7 +311,7 @@ app.get("/api/v1/business", function(request, response) {
 // Now we go and listen for a connection.
 https.createServer({
   key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
+  cert: fs.readFileSync('cert.pem'),
   passphrase: 'cs4471-team200'
 }, app).listen(port);
 //app.listen(port);
