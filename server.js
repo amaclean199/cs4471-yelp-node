@@ -186,13 +186,13 @@ app.get("/api/v1/authors", function(request, response) {
       stars_min = "3000-12-31";
   }
 
-  if(!isValidDate(date_min) || !isValidDate(date_min) ){
-
-    response.send({error: true, message: '(233) bad api call.\n'
-                  +'Date formate is YYYY-MM-DD'});
-    return;
-
-  }
+  // if(!isValidDate(date_min) || !isValidDate(date_min) ){
+  //
+  //   response.send({error: true, message: '(233) bad api call.\n'
+  //                 +'Date formate is YYYY-MM-DD'});
+  //   return;
+  //
+  // }
 
   var s = '{"user_id":"wnzfuir72IZFg5RAPOwWCQ"}';
   var j = JSON.parse(s);
