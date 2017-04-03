@@ -5,3 +5,4 @@ applications:
   memory:  512M
   services:
     - Team200-mongodb-yelp-service
+    - team200-user-login-service
