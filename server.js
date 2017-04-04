@@ -100,7 +100,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Add entries using http put
 //Commented out to prevent mistakes
-// app.put("/reviews",  function(request, response) {
+app.put("/reviews",  function(request, response) {
   if(!request.body) response.send("body was empty");
 
   var temp  = request.body;
