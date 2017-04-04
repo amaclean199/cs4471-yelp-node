@@ -101,23 +101,34 @@ app.use(express.static(__dirname + '/public'));
 // Add entries using http put
 //Commented out to prevent mistakes
 // app.put("/reviews",  function(request, response) {
-//   if(!request.body) response.send("body was empty");
-//
-//   var temp  = request.body;
-//
-//   temp.useful = parseInt(temp.useful);
-//   temp.funny = parseInt(temp.funny);
-//   temp.cool = parseInt(temp.cool);
-//   temp.stars = parseInt(temp.stars);
-//
-//   mongodb.collection("yelp").insertOne( temp, function(error, result) {
-//       if (error) {
-//         response.status(500).send(error);
-//       } else {
-//         response.send(result);
-//       }
-//     });
-// });
+  if(!request.body) response.send("body was empty");
+
+  var temp  = request.body;
+
+  temp.useful = parseInt(temp.useful);
+  temp.funny = parseInt(temp.funny);
+  temp.cool = parseInt(temp.cool);
+  temp.stars = parseInt(temp.stars);
+
+  mongodb.collection("yelp").insertOne( temp, function(error, result) {
+      if (error) {
+        response.status(500).send(error);
+      } else {
+        response.send(result);
+      }
+    });
+});
+
+// Returns our default "funny" list
+app.get("/reset", function(request, response) {
+  mongodb.collection("yelp").drop(function(err, words) {
+    if (err) {
+     response.status(500).send(err);
+    } else {
+     response.send(words);
+    }
+  });
+});
 
 // Returns our default "funny" list
 app.get("/funny", function(request, response) {
