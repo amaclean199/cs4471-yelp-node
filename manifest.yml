@@ -4,4 +4,4 @@ applications:
   host:    cs4471-yelp-node
   memory:  512M
   services:
-    - Team200-mongodb-yelp-service
+    - user-mongodb-service
