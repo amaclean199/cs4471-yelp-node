@@ -151,7 +151,7 @@ app.get("/cool", function(request, response) {
   });
 });
 
-app.put("useful", function(request, response) {
+app.get("useful", function(request, response) {
   mongodb.collection("yelp").find({ "useful" : {"$gt" : 2} }).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
