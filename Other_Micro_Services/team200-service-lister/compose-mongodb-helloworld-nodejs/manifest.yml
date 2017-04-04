@@ -1,0 +1,5 @@
+---
+applications:
+- name:    team200-service-lister
+  host:    team200-service-lister
+  memory:  64M
