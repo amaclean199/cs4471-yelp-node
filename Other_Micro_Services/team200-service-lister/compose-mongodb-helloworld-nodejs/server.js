@@ -104,7 +104,7 @@ app.get("")
 var alive_range = 30;
 
 //This is used to recieve the heartbeat from services
-//team200-user-service.mybluemix.net/heartbeat?service=<service_id>
+//team200-user-service.mybluemix.net/heartbeat?service=<service_id>&desc=<description>&url=<url>
 app.get("/heartbeat", function(request, response) {
 
   var service = request.query.service;
