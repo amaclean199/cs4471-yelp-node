@@ -1,0 +1,5 @@
+---
+applications:
+- name:    Team200-author-service
+  host:    Team200-author-service
+  memory:  64M
