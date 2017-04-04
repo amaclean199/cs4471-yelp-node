@@ -1,0 +1,5 @@
+---
+applications:
+- name:    Team200-business-service
+  host:    Team200-business-service
+  memory:  64M
