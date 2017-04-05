@@ -200,6 +200,20 @@ app.get("/api/v1/reviews", function(request, response) {
 app.get("/api/v1/authors", function(request, response) {
 
   var author = request.query.author;
+
+  //If there is no author field send the list of all authors
+  if(!author){
+    mongodb.collection("yelp").distinct("user_id", function(err, words) {
+      if (err) {
+        response.status(500).send(err);
+      }
+      else {
+        response.send(words);
+        return;
+      }
+    });
+  }
+
   var stars_min = parseInt(request.query.stars_min);
   var stars_max = parseInt(request.query.stars_max);
   var date_min = request.query.date_min;
@@ -264,6 +278,20 @@ app.get("/api/v1/authors", function(request, response) {
 app.get("/api/v1/business", function(request, response) {
 
   var business = request.query.business;
+
+  //If there is no author field send the list of all authors
+  if(!business){
+    mongodb.collection("yelp").distinct("business_id", function(err, words) {
+      if (err) {
+        response.status(500).send(err);
+      }
+      else {
+        response.send(words);
+        return;
+      }
+    });
+  }
+
   var stars_min = parseInt(request.query.stars_min);
   var stars_max = parseInt(request.query.stars_max);
   var date_min = request.query.date_min;

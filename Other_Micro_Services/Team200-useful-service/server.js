@@ -64,22 +64,35 @@ app.get("/services", function(request, response){
   req.end();
 });
 
-// //testing purpose
-// function myFunc (arg) {
-//   console.log('arg was => ' + arg);
-//   app.put(arg, function (req, res) {
-//     res.send('Got a PUT request at /user')
-//   })
-// }
-//
-//
-//
-// setInterval(function(){
-//   myFunc('/user');
-// }, 2000);
+var id = 'USEFUL';
+var desc = 'Our curated list of useful reviews.';
+var link = 'www.google.com';
+
+//Sends the heartbeat to the heartbeat monitor
+function sendHeartbeat () {
+  var options = {
+      host : 'team200-service-lister.mybluemix.net',
+      path : '/heartbeat?service='+ id +'&desc=' + escape(desc) + '&url=' + link,
+      method : "GET"
+  };
+
+  var callback = function(resp){
+
+    resp.on('data', function(data){
+    });
+
+    resp.on('end', function(){
+      console.log('Heartbeat Sent');
+    });
+  }
+  var req = http.request(options, callback);
+  req.end();
+}
 
 
-
+setInterval(function(){
+  sendHeartbeat();
+}, 15000);
 
 
 

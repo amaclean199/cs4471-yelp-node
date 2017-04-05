@@ -37,7 +37,7 @@ var port = process.env.PORT || 8080;
 
 
 //-----------------------------------------------
-console.log("close to get");
+
 var id = 'USEFUL';
 app.get("/sevices", function(request, response){
   var options = {
@@ -45,7 +45,7 @@ app.get("/sevices", function(request, response){
       path : "/useful",
       method : "GET"
   };
-  console.log("befor callback fun");
+
   var callback = function(resp){
     var body = '';
 
@@ -53,32 +53,47 @@ app.get("/sevices", function(request, response){
       body += data;
       console.log("body " + body);
     });
-    console.log("after callback fun");
+
     resp.on('end', function(){
-      console.log(body);
+
       response.send(body);
     })
   }
   var req = http.request(options, callback);
-  //cosole.log(request);
+
   req.end();
 });
 
-// //testing purpose
-// function myFunc (arg) {
-//   console.log('arg was => ' + arg);
-//   app.put(arg, function (req, res) {
-//     res.send('Got a PUT request at /user')
-//   })
-// }
-//
-//
-//
-// setInterval(function(){
-//   myFunc('/user');
-// }, 2000);
+
+var id = 'COOL';
+var desc = 'Our curated list of cool reviews.';
+var link = 'www.google.com';
+
+//Sends the heartbeat to the heartbeat monitor
+function sendHeartbeat () {
+  var options = {
+      host : 'team200-service-lister.mybluemix.net',
+      path : '/heartbeat?service='+ id +'&desc=' + escape(desc) + '&url=' + link,
+      method : "GET"
+  };
+
+  var callback = function(resp){
+
+    resp.on('data', function(data){
+    });
+
+    resp.on('end', function(){
+      console.log('Heartbeat Sent');
+    });
+  }
+  var req = http.request(options, callback);
+  req.end();
+}
 
 
+setInterval(function(){
+  sendHeartbeat();
+}, 15000);
 
 
 

@@ -195,15 +195,8 @@ function splitServices(words,response){
 
       body = JSON.parse(body);
 
-      console.log("sub_list = " + sub_list);
-      console.log("body = " + body);
-      console.log("body.length = " + body.length);
-      console.log("body[0] = " + body[0]);
-
-      console.log("sublist.indexOf(FUNNY) = " + sub_list.indexOf("FUNNY"));
 
       for(var i = 0; i < body.length; i++){
-        console.log("i = " + i);
 
         if(sub_list.indexOf(body[i].service) === -1){
           unsubbed.push(JSON.stringify(body[i]));
@@ -213,18 +206,13 @@ function splitServices(words,response){
         }
       }
 
-      result = '{"subbed":['+subbed+'] ,"unsubbed":['+unsubbed+'] }';
-      console.log("subbed = " + subbed);
-      console.log("unsubbed = " + unsubbed);
-      console.log("result (in callback) = "+ result);
+      result = '{"activeSubscribed":['+subbed+'] ,"activeUnsubscribed":['+unsubbed+'] }';
       response.send(result);
     })
   }
   var req = http.request(options, callback);
   req.end();
 
-  console.log("result at end) = " +result);
-  //return result;
 }
 
 app.listen(port);
