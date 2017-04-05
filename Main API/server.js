@@ -18,6 +18,7 @@
 var express = require('express');
 var fs = require('fs');
 var https = require('https');
+var http = require('http');
 var app = express();
 
 var bodyParser = require('body-parser');
@@ -209,67 +210,68 @@ app.get("/api/v1/authors", function(request, response) {
       }
       else {
         response.send(words);
-        return;
+      }
+    });
+  }
+  else{
+    var stars_min = parseInt(request.query.stars_min);
+    var stars_max = parseInt(request.query.stars_max);
+    var date_min = request.query.date_min;
+    var date_max = request.query.date_max;
+
+    //check for null input
+    if( isNaN(stars_min) ){
+        stars_min = 0;
+    }
+    if( isNaN(stars_max) ){
+        stars_max = 5;
+    }
+    //Check for sensible input
+    if(stars_min < 0){
+      stars_min = 0;
+    }
+    if(stars_max > 5){
+      stars_max = 5;
+    }
+    if(stars_min > stars_max){
+      stars_min = 0;
+      stars_max = 5;
+    }
+
+    //validate date input
+    if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
+      date_min = "1000-01-01";
+    }
+    if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
+      date_max = "3000-12-31";
+    }
+    if(date_min > date_max){
+      date_min = "1000-01-01";
+      date_max = "3000-12-31";
+    }
+
+    //Build user Query
+    var user = '"user_id":"'+author+'"';
+    //Build star query string
+    var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
+    //Build date query string
+    var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
+
+    var s = '{' + user  +','
+                + date  +','
+                + stars +'}';
+    var j = JSON.parse(s);
+
+    mongodb.collection("yelp").find(j).toArray(function(err, words) {
+      if (err) {
+        response.status(500).send(err);
+      }
+      else {
+        response.send(words);
       }
     });
   }
 
-  var stars_min = parseInt(request.query.stars_min);
-  var stars_max = parseInt(request.query.stars_max);
-  var date_min = request.query.date_min;
-  var date_max = request.query.date_max;
-
-  //check for null input
-  if( isNaN(stars_min) ){
-      stars_min = 0;
-  }
-  if( isNaN(stars_max) ){
-      stars_max = 5;
-  }
-  //Check for sensible input
-  if(stars_min < 0){
-    stars_min = 0;
-  }
-  if(stars_max > 5){
-    stars_max = 5;
-  }
-  if(stars_min > stars_max){
-    stars_min = 0;
-    stars_max = 5;
-  }
-
-  //validate date input
-  if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
-    date_min = "1000-01-01";
-  }
-  if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
-    date_max = "3000-12-31";
-  }
-  if(date_min > date_max){
-    date_min = "1000-01-01";
-    date_max = "3000-12-31";
-  }
-
-  //Build user Query
-  var user = '"user_id":"'+author+'"';
-  //Build star query string
-  var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
-  //Build date query string
-  var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
-
-  var s = '{' + user  +','
-              + date  +','
-              + stars +'}';
-  var j = JSON.parse(s);
-
-  mongodb.collection("yelp").find(j).toArray(function(err, words) {
-    if (err) {
-      response.status(500).send(err);
-    }
-    else {
-      response.send(words);
-    }
-  });
 });
 
 // API handling for reviews based on an author id
@@ -287,92 +289,104 @@ app.get("/api/v1/business", function(request, response) {
       }
       else {
         response.send(words);
-        return;
+      }
+    });
+  }
+  else{
+    var stars_min = parseInt(request.query.stars_min);
+    var stars_max = parseInt(request.query.stars_max);
+    var date_min = request.query.date_min;
+    var date_max = request.query.date_max;
+
+    //check for null input
+    if( isNaN(stars_min) ){
+        stars_min = 0;
+    }
+    if( isNaN(stars_max) ){
+        stars_max = 5;
+    }
+    //Check for sensible input
+    if(stars_min < 0){
+      stars_min = 0;
+    }
+    if(stars_max > 5){
+      stars_max = 5;
+    }
+    if(stars_min > stars_max){
+      stars_min = 0;
+      stars_max = 5;
+    }
+
+    //validate date input
+    if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
+      date_min = "1000-01-01";
+    }
+    if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
+      date_max = "3000-12-31";
+    }
+    if(date_min > date_max){
+      date_min = "1000-01-01";
+      date_max = "3000-12-31";
+    }
+
+    //Build user Query
+    business = '"business_id":"'+business+'"';
+    //Build star query string
+    var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
+    //Build date query string
+    var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
+
+    var s = '{' + business  +','
+                + date  +','
+                + stars +'}';
+    var j = JSON.parse(s);
+
+    mongodb.collection("yelp").find(j).toArray(function(err, words) {
+      if (err) {
+        response.status(500).send(err);
+      }
+      else {
+        response.send(words);
       }
     });
   }
 
-  var stars_min = parseInt(request.query.stars_min);
-  var stars_max = parseInt(request.query.stars_max);
-  var date_min = request.query.date_min;
-  var date_max = request.query.date_max;
 
-  //check for null input
-  if( isNaN(stars_min) ){
-      stars_min = 0;
-  }
-  if( isNaN(stars_max) ){
-      stars_max = 5;
-  }
-  //Check for sensible input
-  if(stars_min < 0){
-    stars_min = 0;
-  }
-  if(stars_max > 5){
-    stars_max = 5;
-  }
-  if(stars_min > stars_max){
-    stars_min = 0;
-    stars_max = 5;
-  }
-
-  //validate date input
-  if( ( date_min === null ) || ( !isValidDate(date_min) ) ){
-    date_min = "1000-01-01";
-  }
-  if( ( date_max === null ) || ( !isValidDate(date_min) ) ){
-    date_max = "3000-12-31";
-  }
-  if(date_min > date_max){
-    date_min = "1000-01-01";
-    date_max = "3000-12-31";
-  }
-
-  //Build user Query
-  business = '"business_id":"'+business+'"';
-  //Build star query string
-  var stars = '"stars":{"$gte":'+stars_min+',"$lte":'+stars_max+'}';
-  //Build date query string
-  var date = '"date":{"$gte":"'+date_min+'","$lte":"'+date_max+'"}';
-
-  var s = '{' + business  +','
-              + date  +','
-              + stars +'}';
-  var j = JSON.parse(s);
-
-  mongodb.collection("yelp").find(j).toArray(function(err, words) {
-    if (err) {
-      response.status(500).send(err);
-    }
-    else {
-      response.send(words);
-    }
-  });
 });
 
-//Back up
-// API handling for reviews based on funny/userful/cool rating
-// app.get("/api/v1/reviews", function(request, response) {
-//   // and we call on the connection to return us all the documents in the
-//   // words collection.\
-//   var s = '{ "funny" : {"$gt" : 2} }'
-//   var p = JSON.parse(s);
-//
-//   mongodb.collection("yelp").find(p/*{ "funny" : {"$gt" : 2} }*/).toArray(function(err, words) {
-//     if (err) {
-//      response.send(err);
-//     } else {
-//      response.send(words);
-//     }
-//   });
-// });
-// /api/v1/reviews/?type=<type>&value=<number>
 
-// Now we go and listen for a connection.
-// https.createServer({
-//   key: fs.readFileSync('newkey.pem'),
-//   cert: fs.readFileSync('cert.pem'),
-// }, app).listen(port);
+var id = 'API';
+var desc = 'Full access to the Team200 database API. Intended for developers only.';
+var link = 'www.google.com';
+
+//Sends the heartbeat to the heartbeat monitor
+function sendHeartbeat () {
+  var options = {
+      host : 'team200-service-lister.mybluemix.net',
+      path : '/heartbeat?service='+ id +'&desc=' + escape(desc) + '&url=' + link,
+      method : "GET"
+  };
+
+  var callback = function(resp){
+
+    resp.on('data', function(data){
+    });
+
+    resp.on('end', function(){
+      console.log('Heartbeat Sent');
+    });
+  }
+  var req = http.request(options, callback);
+  req.end();
+}
+
+
+setInterval(function(){
+  sendHeartbeat();
+}, 15000);
+
+
+
 app.listen(port);
 
 require("cf-deployment-tracker-client").track();
