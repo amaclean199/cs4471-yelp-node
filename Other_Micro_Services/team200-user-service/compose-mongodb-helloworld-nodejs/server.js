@@ -199,14 +199,15 @@ function splitServices(words,response){
       for(var i = 0; i < body.length; i++){
 
         if(sub_list.indexOf(body[i].service) === -1){
-          unsubbed.push(JSON.stringify(body[i]));
+          body[i].subscribed = false;
         }
         else{
-          subbed.push(JSON.stringify(body[i]));
+          body[i].subscribed = true;
         }
       }
 
-      result = '{"activeSubscribed":['+subbed+'] ,"activeUnsubscribed":['+unsubbed+'] }';
+      console.log(JSON.stringify(body));
+      result = body;
       response.send(result);
     })
   }
