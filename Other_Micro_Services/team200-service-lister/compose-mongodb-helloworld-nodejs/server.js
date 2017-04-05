@@ -34,7 +34,7 @@ const util = require('util')
 const assert = require('assert');
 
 // We want to extract the port to publish our app on
-var port = process.env.PORT || 8081;
+var port = process.env.PORT || 8080;
 
 // Then we'll pull in the database client library
 var MongoClient = require("mongodb").MongoClient;
@@ -128,28 +128,26 @@ app.get("/heartbeat", function(request, response) {
       response.status(500).send(err);
     }
     else {
+      //Get current time
+      var d = new Date();
+      var time = Math.floor(d.getTime()/1000);
 
+      //Add the new heartbeat timestamp to the database
+      s = '{"service":"' + service +'", "desc":"'+desc+'", "url":"'+url+'", "time":'+time+'}';
+      console.log(s);
+      j = JSON.parse(s);
+
+      mongodb.collection("services").insertOne(j ,function(err, words) {
+        if (err) {
+          response.status(500).send(err);
+        }
+        else {
+          response.send(words);
+        }
+      });
     }
   });
 
-
-  //Get current time
-  var d = new Date();
-  var time = Math.floor(d.getTime()/1000);
-
-  //Add the new heartbeat timestamp to the database
-  s = '{"service":"' + service +'", "desc":"'+desc+'", "url":"'+url+'", "time":'+time+'}';
-  console.log(s);
-  j = JSON.parse(s);
-
-  mongodb.collection("services").insertOne(j ,function(err, words) {
-    if (err) {
-      response.status(500).send(err);
-    }
-    else {
-      response.send(words);
-    }
-  });
 });
 
 //Gets all services that have checked in within the last 30 seconds

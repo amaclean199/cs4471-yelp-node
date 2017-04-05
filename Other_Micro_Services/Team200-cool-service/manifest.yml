@@ -2,4 +2,4 @@
 applications:
 - name:    Team200-cool-service
   host:    Team200-cool-service
-  memory:  64M
+  memory:  128M

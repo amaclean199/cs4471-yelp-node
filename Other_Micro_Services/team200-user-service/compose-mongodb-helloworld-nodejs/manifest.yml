@@ -2,6 +2,6 @@
 applications:
 - name:    team200-user-service
   host:    team200-user-service
-  memory:  64M
+  memory:  128M
   services:
     - user-mongodb-service

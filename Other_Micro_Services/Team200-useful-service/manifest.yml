@@ -2,4 +2,4 @@
 applications:
 - name:    Team200-useful-service
   host:    Team200-useful-service
-  memory:  64M
+  memory:  128M

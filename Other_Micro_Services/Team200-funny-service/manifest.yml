@@ -2,4 +2,4 @@
 applications:
 - name:    Team200-funny-service
   host:    Team200-funny-service
-  memory:  64M
+  memory:  128M

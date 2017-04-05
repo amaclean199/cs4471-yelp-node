@@ -19,7 +19,6 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-console.log('before http');
 var http = require('http');
 
 app.use(bodyParser.urlencoded({
@@ -37,46 +36,60 @@ var port = process.env.PORT || 8080;
 
 
 //-----------------------------------------------
-console.log("close to get");
+
 var id = 'FUNNY';
+var desc = 'Our curated list of funny reviews.';
+var link = 'www.google.com';
+
+
 app.get("/services", function(request, response){
   var options = {
       host : "cs4471-yelp-node.mybluemix.net",
       path : "/funny",
       method : "GET"
   };
-  console.log("befor callback fun");
+
   var callback = function(resp){
     var body = '';
 
     resp.on('data', function(data){
       body += data;
-      console.log("body " + body);
     });
-    console.log("after callback fun");
+
     resp.on('end', function(){
-      console.log(body);
       response.send(body);
     })
   }
   var req = http.request(options, callback);
-  //cosole.log(request);
   req.end();
 });
 
-// //testing purpose
-// function myFunc (arg) {
-//   console.log('arg was => ' + arg);
-//   app.put(arg, function (req, res) {
-//     res.send('Got a PUT request at /user')
-//   })
-// }
-//
-//
-//
-// setInterval(function(){
-//   myFunc('/user');
-// }, 2000);
+//Sends the heartbeat to the heartbeat monitor
+function sendHeartbeat () {
+  var options = {
+      host : 'team200-service-lister.mybluemix.net',
+      path : '/heartbeat?service='+ id +'&desc=' + escape(desc) + '&url=' + link,
+      method : "GET"
+  };
+
+  var callback = function(resp){
+
+    resp.on('data', function(data){
+    });
+
+    resp.on('end', function(){
+      console.log('Heartbeat Sent');
+    });
+  }
+  var req = http.request(options, callback);
+  req.end();
+}
+
+
+
+setInterval(function(){
+  sendHeartbeat();
+}, 15000);
 
 
 

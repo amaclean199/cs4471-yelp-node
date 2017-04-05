@@ -19,6 +19,7 @@ var express = require('express');
 var fs = require('fs');
 var https = require('https');
 var app = express();
+var http = require('http');
 
 var bodyParser = require('body-parser');
 
@@ -34,7 +35,7 @@ const util = require('util')
 const assert = require('assert');
 
 // We want to extract the port to publish our app on
-var port = process.env.PORT || 8081;
+var port = process.env.PORT || 8087;
 
 // Then we'll pull in the database client library
 var MongoClient = require("mongodb").MongoClient;
@@ -98,28 +99,6 @@ MongoClient.connect(credentials.uri, {
 // now set up our web server. First up we set it to server static pages
 app.use(express.static(__dirname + '/public'));
 
-// Add entries using http put
-//Commented out to prevent mistakes
-// app.put("/reviews",  function(request, response) {
-//   if(!request.body) response.send("body was empty");
-//
-//   var temp  = request.body;
-//
-//   temp.useful = parseInt(temp.useful);
-//   temp.funny = parseInt(temp.funny);
-//   temp.cool = parseInt(temp.cool);
-//   temp.stars = parseInt(temp.stars);
-//
-//   mongodb.collection("yelp").insertOne( temp, function(error, result) {
-//       if (error) {
-//         response.status(500).send(error);
-//       } else {
-//         response.send(result);
-//       }
-//     });
-// });
-
-
 //This is used to add a user-service pair to the database.
 //team200-user-service.mybluemix.net/add?user=<userid>&service=<service_id>
 app.get("/add", function(request, response) {
@@ -128,7 +107,6 @@ app.get("/add", function(request, response) {
   var service = request.query.service;
 
   var s = '{"user_id":"' + user + '", "service":"' + service +'"}';
-console.log(s);
 
   var j = JSON.parse(s);
 
@@ -179,10 +157,75 @@ console.log(s);
       response.status(500).send(err);
     }
     else {
-      response.send(words);
+      var output = splitServices(words, response);
+      // console.log("output = " + output);
+      // response.send(words);
     }
   });
 });
+
+//Splits available services into subbed and unsubbed based on users
+//subscriptions
+function splitServices(words,response){
+  var result;
+
+  var subbed = [];
+  var unsubbed = [];
+
+  //Get the list of active services
+  var options = {
+      host : "team200-service-lister.mybluemix.net",
+      path : "/services",
+      method : "GET"
+  };
+
+  var callback = function(resp){
+    var body = '';
+
+    resp.on('data', function(data){
+      body += data;
+    });
+
+    resp.on('end', function(){
+      //Make list of subbed services;
+      var sub_list = [];
+      for(var i = 0; i < words.length; i++){
+        sub_list.push(words[i].service);
+      }
+
+      body = JSON.parse(body);
+
+      console.log("sub_list = " + sub_list);
+      console.log("body = " + body);
+      console.log("body.length = " + body.length);
+      console.log("body[0] = " + body[0]);
+
+      console.log("sublist.indexOf(FUNNY) = " + sub_list.indexOf("FUNNY"));
+
+      for(var i = 0; i < body.length; i++){
+        console.log("i = " + i);
+
+        if(sub_list.indexOf(body[i].service) === -1){
+          unsubbed.push(JSON.stringify(body[i]));
+        }
+        else{
+          subbed.push(JSON.stringify(body[i]));
+        }
+      }
+
+      result = '{"subbed":['+subbed+'] ,"unsubbed":['+unsubbed+'] }';
+      console.log("subbed = " + subbed);
+      console.log("unsubbed = " + unsubbed);
+      console.log("result (in callback) = "+ result);
+      response.send(result);
+    })
+  }
+  var req = http.request(options, callback);
+  req.end();
+
+  console.log("result at end) = " +result);
+  //return result;
+}
 
 app.listen(port);
 

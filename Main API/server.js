@@ -132,7 +132,7 @@ app.get("/reset", function(request, response) {
 
 // Returns our default "funny" list
 app.get("/funny", function(request, response) {
-  mongodb.collection("yelp").find({ "funny" : {"$gt" : 2} }).toArray(function(err, words) {
+  mongodb.collection("yelp").find({ "funny" : {"$gt" : 2} }).sort({"_id":-1}).limit(50).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
@@ -142,7 +142,7 @@ app.get("/funny", function(request, response) {
 });
 
 app.get("/cool", function(request, response) {
-  mongodb.collection("yelp").find({ "cool" : {"$gt" : 2} }).toArray(function(err, words) {
+  mongodb.collection("yelp").find({ "cool" : {"$gt" : 2} }).sort({"_id":-1}).limit(50).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
@@ -151,8 +151,8 @@ app.get("/cool", function(request, response) {
   });
 });
 
-app.get("useful", function(request, response) {
-  mongodb.collection("yelp").find({ "useful" : {"$gt" : 2} }).toArray(function(err, words) {
+app.get("/useful", function(request, response) {
+  mongodb.collection("yelp").find({ "useful" : {"$gt" : 2} }).sort({"_id":-1}).limit(50).toArray(function(err, words) {
     if (err) {
      response.status(500).send(err);
     } else {
