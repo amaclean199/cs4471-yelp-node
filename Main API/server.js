@@ -163,7 +163,7 @@ app.get("/useful", function(request, response) {
 });
 
 // API handling for reviews based on funny/userful/cool rating
-// /api/v1/reviews/?type=<type>&value=<number>
+// /api/v1/reviews?type=<type>&value=<number>
 app.get("/api/v1/reviews", function(request, response) {
 
   var type = request.query.type;
@@ -357,7 +357,7 @@ app.get("/api/v1/business", function(request, response) {
 
 var id = 'API';
 var desc = 'Full access to the Team200 database API. Intended for developers only.';
-var link = 'www.google.com';
+var link = 'cs4471-yelp-node.mybluemix.net/';
 
 //Sends the heartbeat to the heartbeat monitor
 function sendHeartbeat () {
