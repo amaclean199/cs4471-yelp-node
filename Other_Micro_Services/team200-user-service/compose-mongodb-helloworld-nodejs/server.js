@@ -1,20 +1,11 @@
 /**
- * Copyright 2016 IBM Corp. All Rights Reserved.
+ * This service adds and removes user subscriptions.
  *
- * Licensed under the Apache License, Version 2.0 (the “License”);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an “AS IS” BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * As well this service can be queried with a user_id and a list of active
+ * serives will be generated and marked with meta data indicating
+ * if the user is subscribed to that service or not.
  */
 
- // First add the obligatory web framework
 var express = require('express');
 var fs = require('fs');
 var https = require('https');
@@ -169,9 +160,6 @@ console.log(s);
 function splitServices(words,response){
   var result;
 
-  var subbed = [];
-  var unsubbed = [];
-
   //Get the list of active services
   var options = {
       host : "team200-service-lister.mybluemix.net",
@@ -206,7 +194,6 @@ function splitServices(words,response){
         }
       }
 
-      console.log(JSON.stringify(body));
       result = body;
       response.send(result);
     })

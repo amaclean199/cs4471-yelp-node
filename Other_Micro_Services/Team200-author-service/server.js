@@ -1,20 +1,8 @@
 /**
- * Copyright 2016 IBM Corp. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the “License”);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an “AS IS” BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * An author search service. Provides limited access to the full database.
+ * Focused on author centric data.
  */
 
- // First add the obligatory web framework
 
 var express = require('express');
 var app = express();
@@ -27,24 +15,25 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-// Util is handy to have around, so thats why that's here.
 const util = require('util')
-// and so is assert
 const assert = require('assert');
 
 // We want to extract the port to publish our app on
 var port = process.env.PORT || 8080;
 
 
-//-----------------------------------------------
-
-app.get("/sevices", function(request, response){
+//An endpoint the plugs into the front end.
+//Uses /services to display all authors and
+// /services?author=<author_id> to access the specified list of reviews for
+// the author with that author_id
+app.get("/services", function(request, response){
   var author = request.query.author;
   var url_path = "/api/v1/authors"
   if(author){
       url_path = url_path + "?author=" + author;
   }
-  console.log(url_path);
+
+  //Forward request to full API
   var options = {
       host : "cs4471-yelp-node.mybluemix.net",
       path : url_path,
@@ -71,7 +60,7 @@ app.get("/sevices", function(request, response){
 
 var id = 'AUTHOR';
 var desc = 'Search for reviews writter by your favorite authors.';
-var link = 'www.google.com';
+var link = 'author';
 
 //Sends the heartbeat to the heartbeat monitor
 function sendHeartbeat () {

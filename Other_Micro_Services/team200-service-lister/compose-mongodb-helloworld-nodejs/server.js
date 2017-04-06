@@ -1,17 +1,9 @@
 /**
- * Copyright 2016 IBM Corp. All Rights Reserved.
+ * A service lister. User centered services (not micro-services) send a
+ * heartbeat to this micro-service.
  *
- * Licensed under the Apache License, Version 2.0 (the “License”);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an “AS IS” BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Other services can query this micro-srvice for all user-services that have
+ * checked in within the last 30 seconds
  */
 
  // First add the obligatory web framework
@@ -28,9 +20,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-// Util is handy to have around, so thats why that's here.
 const util = require('util')
-// and so is assert
 const assert = require('assert');
 
 // We want to extract the port to publish our app on
@@ -172,17 +162,18 @@ app.get("/services", function(request, response) {
 });
 
 //deletes the db
-app.get("/reset", function(request, response) {
-
-  mongodb.collection("services").drop(function(err, words) {
-    if (err) {
-      response.status(500).send(err);
-    }
-    else {
-      response.send(words);
-    }
-  });
-});
+//Uncomment only in case of emergencies.
+// app.get("/reset", function(request, response) {
+//
+//   mongodb.collection("services").drop(function(err, words) {
+//     if (err) {
+//       response.status(500).send(err);
+//     }
+//     else {
+//       response.send(words);
+//     }
+//   });
+// });
 
 app.listen(port);
 

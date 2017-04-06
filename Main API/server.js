@@ -1,20 +1,8 @@
 ﻿/**
- * Copyright 2016 IBM Corp. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the “License”);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an “AS IS” BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * A restful API service that is connected to a mongoDB database.
+ * The database is hosted on bluemixm, as is the webserver.
  */
 
- // First add the obligatory web framework
 var express = require('express');
 var fs = require('fs');
 var https = require('https');
@@ -29,9 +17,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-// Util is handy to have around, so thats why that's here.
 const util = require('util')
-// and so is assert
 const assert = require('assert');
 
 // We want to extract the port to publish our app on
@@ -99,39 +85,41 @@ MongoClient.connect(credentials.uri, {
 // now set up our web server. First up we set it to server static pages
 app.use(express.static(__dirname + '/public'));
 
-// Add entries using http put
-//Commented out to prevent mistakes
-app.put("/reviews",  function(request, response) {
-  if(!request.body) response.send("body was empty");
+// // Add entries using http put
+// //Used to remotely add entries to the reviews data base from the json file
+// //provided in the yelp challenge
+// app.put("/reviews",  function(request, response) {
+//   if(!request.body) response.send("body was empty");
+//
+//   var temp  = request.body;
+//
+//   //Need to convert from string to int so comparisions are meaningful
+//   temp.useful = parseInt(temp.useful);
+//   temp.funny = parseInt(temp.funny);
+//   temp.cool = parseInt(temp.cool);
+//   temp.stars = parseInt(temp.stars);
+//
+//   mongodb.collection("yelp").insertOne( temp, function(error, result) {
+//       if (error) {
+//         response.status(500).send(error);
+//       } else {
+//         response.send(result);
+//       }
+//     });
+// });
+//
+// //Resets the database if we mess it up
+// app.get("/reset", function(request, response) {
+//   mongodb.collection("yelp").drop(function(err, words) {
+//     if (err) {
+//      response.status(500).send(err);
+//     } else {
+//      response.send(words);
+//     }
+//   });
+// });
 
-  var temp  = request.body;
-
-  temp.useful = parseInt(temp.useful);
-  temp.funny = parseInt(temp.funny);
-  temp.cool = parseInt(temp.cool);
-  temp.stars = parseInt(temp.stars);
-
-  mongodb.collection("yelp").insertOne( temp, function(error, result) {
-      if (error) {
-        response.status(500).send(error);
-      } else {
-        response.send(result);
-      }
-    });
-});
-
-// Returns our default "funny" list
-app.get("/reset", function(request, response) {
-  mongodb.collection("yelp").drop(function(err, words) {
-    if (err) {
-     response.status(500).send(err);
-    } else {
-     response.send(words);
-    }
-  });
-});
-
-// Returns our default "funny" list
+//1 of 3 implementations of an Inventory Endpoint pattern for our catagory services
 app.get("/funny", function(request, response) {
   mongodb.collection("yelp").find({ "funny" : {"$gt" : 2} }).sort({"_id":-1}).limit(50).toArray(function(err, words) {
     if (err) {
@@ -142,6 +130,7 @@ app.get("/funny", function(request, response) {
   });
 });
 
+//2 of 3 implementations of an Inventory Endpoint pattern for our catagory services
 app.get("/cool", function(request, response) {
   mongodb.collection("yelp").find({ "cool" : {"$gt" : 2} }).sort({"_id":-1}).limit(50).toArray(function(err, words) {
     if (err) {
@@ -152,6 +141,7 @@ app.get("/cool", function(request, response) {
   });
 });
 
+//3 of 3 implementations of an Inventory Endpoint pattern for our catagory services
 app.get("/useful", function(request, response) {
   mongodb.collection("yelp").find({ "useful" : {"$gt" : 2} }).sort({"_id":-1}).limit(50).toArray(function(err, words) {
     if (err) {
@@ -281,7 +271,7 @@ app.get("/api/v1/business", function(request, response) {
 
   var business = request.query.business;
 
-  //If there is no author field send the list of all authors
+  //If there is no business field send the list of all buisnesses
   if(!business){
     mongodb.collection("yelp").distinct("business_id", function(err, words) {
       if (err) {
@@ -354,10 +344,10 @@ app.get("/api/v1/business", function(request, response) {
 
 });
 
-
+//Meta data attached to the heartbeat
 var id = 'API';
 var desc = 'Full access to the Team200 database API. Intended for developers only.';
-var link = 'cs4471-yelp-node.mybluemix.net/';
+var link = 'https://cs4471-yelp-node.mybluemix.net/';
 
 //Sends the heartbeat to the heartbeat monitor
 function sendHeartbeat () {
